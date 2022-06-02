@@ -16,5 +16,6 @@ export async function memberCheck(client: Discord.Client, guildID: string, userI
 }
 
 export function restartBot(command: string) {
+    console.log(command)
     const child = exec(command)
 }
