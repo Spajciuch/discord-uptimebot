@@ -1,6 +1,7 @@
 import * as Discord from "discord.js"
 import * as env from "dotenv"
 import * as config from "./config.json"
+import {restartBot} from "./functions"
 
 env.config()
 
@@ -43,16 +44,23 @@ export async function sendWarning() {
         const embed = new Discord.MessageEmbed()
             .setColor(config.waringColor as Discord.ColorResolvable)
             .setTitle("⚠ BOT OFFLINE")
-            .setDescription("• Wykryto, że bot przeszedł w tryb offline. Po naprawieniu błędu zareaguj pod tą wiadomością.")
+            .setDescription("• Wykryto, że bot przeszedł w tryb offline. Po naprawieniu błędu zareaguj pod tą wiadomością.\n\n• Jeśli chcesz włączyć go zdalnie zareaguj: ⚙️")
             .setTimestamp()
         owner.send({ embeds: [embed] }).then(async message => {
-            message.react("⚒️")
+            message.react("⚒️").then(() => message.react("⚙️"))
 
             const reactionFilter = (reaction: Discord.MessageReaction, user: Discord.User) => reaction.emoji.name == "⚒️" && user.id == owner.id
             const reactionCollector = message.createReactionCollector({filter: reactionFilter})
 
+            const runReactionFilter = (reaction: Discord.MessageReaction, user: Discord.User) => reaction.emoji.name == "⚙️" && user.id == owner.id
+            const runReactionCollector = message.createReactionCollector({filter: runReactionFilter})
+
             reactionCollector.on("collect", r => {
                 allarmed = false
+            })
+
+            runReactionCollector.on("collect", () => {
+                restartBot(config.executeCommand)
             })
         })
 

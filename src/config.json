@@ -1,6 +1,7 @@
 {
-    "ownerID": "",
-    "guildID": "",
-    "botID": "",
-    "waringColor": "#ff006f"
+    "ownerID": "367390191721381890",
+    "guildID": "469846041764691988",
+    "botID": "564837787463843840",
+    "waringColor": "#ff006f",
+    "executeCommand": "( cd /home/spyte/Trit && exec nodemon . )"
 }
